@@ -18,6 +18,11 @@ and passed it on still warm.
 
 
 def main() -> None:
+    # The gate admits only UTF-8 text of 1-280 Unicode code points, not only
+    # whitespace; refuse to write anything that would fail it.
+    points = len(POEM)
+    if not 1 <= points <= 280 or not any(not c.isspace() for c in POEM):
+        raise SystemExit(f"poem fails the gate: {points} code points")
     os.makedirs("/output", exist_ok=True)
     with open("/output/entry.txt", "w", encoding="utf-8") as f:
         f.write(POEM)
